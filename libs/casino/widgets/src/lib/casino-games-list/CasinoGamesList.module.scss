@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  row-gap: 10px;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 77rem;
+  padding-top: 1.25rem;
+}
+
+.gameContainer {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.6;
+  }
+}
+
+.gameImage {
+  height: 190px;
+  width: 190px;
+}

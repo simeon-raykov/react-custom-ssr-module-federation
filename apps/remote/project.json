@@ -1,0 +1,157 @@
+{
+  "name": "remote",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/remote/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/remote/browser",
+        "index": "apps/remote/src/index.html",
+        "baseHref": "/",
+        "main": "apps/remote/src/main.ts",
+        "polyfills": "apps/remote/src/polyfills.ts",
+        "tsConfig": "apps/remote/tsconfig.app.json",
+        "assets": ["apps/remote/src/favicon.ico", "apps/remote/src/assets"],
+        "styles": ["apps/remote/src/styles.scss"],
+        "scripts": [],
+        "webpackConfig": "apps/remote/webpack.config.js"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/remote/src/environments/environment.ts",
+              "with": "apps/remote/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "webpackConfig": "apps/remote/webpack.config.prod.js"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/webpack:ssr-dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "browserTarget": "remote:build:development",
+        "serverTarget": "remote:serve-server:development",
+        "port": 4300,
+        "browserTargetOptions": {
+          "watch": true
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "browserTarget": "remote:build:production",
+          "serverTarget": "remote:serve-server:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/remote/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/remote/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "serve-static": {
+      "dependsOn": ["build", "server"],
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "development",
+      "options": {
+        "command": "PORT=4300 node dist/apps/remote/server/main.js"
+      }
+    },
+    "server": {
+      "dependsOn": ["build"],
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "main": "apps/remote/server.ts",
+        "outputPath": "dist/apps/remote/server",
+        "tsConfig": "apps/remote/tsconfig.server.json",
+        "compiler": "babel",
+        "externalDependencies": "all",
+        "outputHashing": "none",
+        "webpackConfig": "apps/remote/webpack.server.config.js"
+      },
+      "configurations": {
+        "development": {
+          "optimization": false,
+          "sourceMap": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/remote/src/environments/environment.ts",
+              "with": "apps/remote/src/environments/environment.prod.ts"
+            }
+          ],
+          "sourceMap": false
+        }
+      }
+    },
+    "serve-browser": {
+      "executor": "@nrwl/react:module-federation-dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "remote:build",
+        "hmr": true,
+        "port": 4300
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "remote:build:development"
+        },
+        "production": {
+          "buildTarget": "remote:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "serve-server": {
+      "executor": "@nrwl/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "remote:server:development",
+        "buildTargetOptions": {
+          "watch": true
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "buildTarget": "remote:server:production"
+        }
+      }
+    }
+  },
+  "tags": []
+}

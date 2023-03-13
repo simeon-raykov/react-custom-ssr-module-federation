@@ -1,0 +1,28 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "ES2020",
+    "lib": ["es2017", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@sw2.0/casino/widgets": ["libs/casino/widgets/src/index.ts"],
+      "@sw2.0/core": ["libs/core/src/index.ts"],
+      "@sw2.0/design-system/global-components": [
+        "libs/design-system/global-components/src/index.ts"
+      ],
+      "@sw2.0/host/widgets": ["libs/host/widgets/src/index.ts"],
+      "@sw2.0/sport/widgets": ["libs/sport/widgets/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}
